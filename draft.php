@@ -80,36 +80,23 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 <input type="text" name="search" placeholder="Введите слово"/>
 <input type="submit" value="Искать">
  </form>
-
- <?php 
- if(isset($_GET['search']))
- {
- $key=$_GET["search"];  //key=pattern to be searched
- 
- $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
- 
- while($row=mysqli_fetch_assoc($result))
- {
-   echo "<p>".$row['keyphrase']."</p>";
-   echo $row['comment'];
-   echo $row['quote'];
-   echo '<br>';
- } 
- } 
- ?>
+    </div>
     </div>
 
-    <div class="row">
+   
 
     <?php 
    function sortLetter($letter){
     $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
     mysqli_query($mysqli,"SET NAMES UTF8");
-    $result =  $mysqli->query("SELECT keyphrase, comment, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
+    $result =  $mysqli->query("SELECT keyphrase,  comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
     while($row = $result->fetch_assoc()){
-    echo $row['keyphrase'];
-    echo $row['comment'];
-    echo $row['quote'];
+    echo "<div class='row result'>";
+    echo "<div class='col-lg-12'>".$row['keyphrase']."</div>";
+    echo  "<div class='col-lg-12'>".$row['comment']."</div>";
+    echo "<div class='col-lg-12'>".$row['song']."</div>";
+    echo  "<div class='col-lg-12'>".$row['quote']."</div>";
+    echo "</div>";
     echo '<br>';
     }
   }
@@ -131,8 +118,29 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      }
  }
   ?>
+
+<?php 
+ if(!empty($_GET['search']))
+ {
+ $key=$_GET["search"];  //key=pattern to be searched
+ 
+ 
+ $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
+ 
+ while($row=mysqli_fetch_assoc($result))
+ {
+  echo "<div class='row result'>";
+   echo "<div class='col-lg-12'>".$row['keyphrase']."</div>";
+   echo "<div class='col-lg-12'>".$row['comment']."</div>";
+   echo "<div class='col-lg-12'>".$row['song']."</div>";
+   echo "<div class='col-lg-12'>".$row['quote']."</div>";
+   echo '<br>';
+   echo "</div>";
+ } 
+ } 
+ ?>
     </div>
-    </div>
+  
     
 
   </div>
@@ -142,13 +150,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
    <br>
    
 
-
-   
-
-
-
-
-
+ 
 <!--<table>
 <thead>
           <tr>
