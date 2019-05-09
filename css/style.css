@@ -1,0 +1,103 @@
+p {
+  font-family: 'Caveat', cursive;
+}
+
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.row {
+  margin-left: 0;
+  margin-right: 0;
+
+}
+
+.body {
+  box-sizing: border-box;
+}
+
+.main-image {
+  height: 30vh;
+  width: 100%;
+  background-image:  linear-gradient(
+    to left, transparent, rgb(101, 86, 53)), url("../img/bowed-stringed-instrument-brown-chord-1407322.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 574px) {
+  .main-image{
+    height: 20vh;
+    }
+}
+
+.main__quote {
+  /*position: relative;
+  width: 25%;*/
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem;
+  color: wheat;
+  padding-top: 10vh;
+  margin-left: 2rem; 
+}
+
+
+.main__quote--right {
+  text-align: right;
+}
+
+@media (max-width: 574px) {
+  .main__quote{font-size: 0.7rem;
+    height: 20vh;
+    padding-top: 4vh;}
+}
+
+.glossary {
+  background-color: #402B26;
+  font-family: 'El Messiri', sans-serif;
+  padding: 0;
+
+  
+}
+
+.glossary-list {
+  text-align: center;
+  padding-top: 0.2rem;
+  padding-bottom: 0.1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.glossary-list a{
+  display: inline-block;
+  color: wheat;
+  transition: transform .2s;  
+  text-decoration: none;  
+  text-justify: distribute-all-lines;
+}
+
+.glossary-list a:hover {
+  transform: scale(1.5);
+  text-shadow: 0.1rem 0.1rem rgb(176, 153, 112);
+}
+
+.glossary-list a:not(:last-child){
+   padding-right: 0.25rem;
+}
+
+.search {
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .search{
+    padding-bottom: 0.3rem;
+}
+}
+
+[type=button], [type=reset], [type=submit], button {
+  background-color: #C9B183;
+  border-color: #C9B183;
+  font-weight: 700;
+  color: rgb(117, 81, 73);
+  outline: none;
+}
