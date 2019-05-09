@@ -27,6 +27,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 <body>
 
 <div class="container">
+  <!--main image section!-->
   <div class="row main-image">
     <div class="main__quote pr-5">
       <div class="main__quote--left">... Мне есть что спеть, представ перед всевышним, <br>
@@ -69,10 +70,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
         <a href="?c=17">Э</a>
         <a href="?c=18">Ю</a>
         <a href="?c=19">Я</a>
-      </div>
-     
-      
-      
+      </div>     
       
       
   <div class="col-lg-4 col-md d-flex justify-content-center search">
@@ -90,14 +88,24 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
     mysqli_query($mysqli,"SET NAMES UTF8");
     $result =  $mysqli->query("SELECT keyphrase,  comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
+    echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center'><span class='letter'>".$letter."</span></div></div>";
     while($row = $result->fetch_assoc()){
-    echo "<div class='row result'>";
-    echo "<div class='col-lg-12'>".$row['keyphrase']."</div>";
-    echo  "<div class='col-lg-12'>".$row['comment']."</div>";
-    echo "<div class='col-lg-12'>".$row['song']."</div>";
-    echo  "<div class='col-lg-12'>".$row['quote']."</div>";
-    echo "</div>";
-    echo '<br>';
+      
+      echo "<div class='row result '>";
+      echo "<div class='col-lg-12 '>";
+      echo "<div class='wrapper d-flex keyphrase mt-3 mb-2 justify-content-center'>".$row['keyphrase']."</div>";
+      echo "</div>";
+      echo  "<div class='col-lg-12'>";
+      echo "<div class='wrapper d-flex mb-4 justify-content-center'>".$row['comment']."</div>"; 
+      echo "</div>";
+      echo "<div class='col-lg-12'>";
+      echo "<div class='wrapper d-flex mb-2 pr-3 justify-content-end'>".$row['song']."</div>";
+      echo "</div>";
+      echo  "<div class='col-lg-12'>";
+      echo "<div class='wrapper quote pr-3 d-flex justify-content-end'>".$row['quote']."</div>";
+      echo "</div>";
+      echo "</div>";
+      echo '<br>';
     }
   }
   $glossary = array("1"=>"А", "2"=>"Б", "3"=>"В", "4"=>"Г", "5"=>"Д",
@@ -110,10 +118,12 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
    if(!empty($_GET["c"])){
      $link = ($_GET["c"]);
-
      foreach($glossary as $key=>$value){
        if($key==$link){
+        echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='draft.php'>На главную</a></span></div></div>";
+        echo "<div class='row line-break'></div>";
         sortLetter($value); 
+       
        }
      }
  }
@@ -121,7 +131,9 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
 <?php 
  if(!empty($_GET['search']))
- {
+ { 
+  echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='draft.php'>На главную</a></span></div></div>";
+  echo "<div class='row line-break'></div>";
  $key=$_GET["search"];  //key=pattern to be searched
  
  
@@ -129,13 +141,22 @@ mysqli_query($mysqli,"SET NAMES UTF8");
  
  while($row=mysqli_fetch_assoc($result))
  {
-  echo "<div class='row result'>";
-   echo "<div class='col-lg-12'>".$row['keyphrase']."</div>";
-   echo "<div class='col-lg-12'>".$row['comment']."</div>";
-   echo "<div class='col-lg-12'>".$row['song']."</div>";
-   echo "<div class='col-lg-12'>".$row['quote']."</div>";
-   echo '<br>';
-   echo "</div>";
+ 
+    echo "<div class='row result '>";
+    echo "<div class='col-lg-12 '>";
+    echo "<div class='wrapper d-flex keyphrase mt-3 mb-2 justify-content-center'>".$row['keyphrase']."</div>";
+    echo "</div>";
+    echo  "<div class='col-lg-12'>";
+    echo "<div class='wrapper d-flex mb-4 justify-content-center'>".$row['comment']."</div>"; 
+    echo "</div>";
+    echo "<div class='col-lg-12'>";
+    echo "<div class='wrapper d-flex mb-2 pr-3 justify-content-end'>".$row['song']."</div>";
+    echo "</div>";
+    echo  "<div class='col-lg-12'>";
+    echo "<div class='wrapper quote pr-3 d-flex justify-content-end'>".$row['quote']."</div>";
+    echo "</div>";
+    echo "</div>";
+    echo '<br>';
  } 
  } 
  ?>
@@ -146,8 +167,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   </div>
 </div>
 
-   <p>Привет, мир!</p>
-   <br>
+   
    
 
  

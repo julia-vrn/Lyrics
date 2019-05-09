@@ -34,7 +34,7 @@ p {
 .main__quote {
   /*position: relative;
   width: 25%;*/
-  font-family: 'Caveat', cursive;
+  font-family: 'Marck Script', cursive;
   font-size: 1.2rem;
   color: wheat;
   padding-top: 10vh;
@@ -94,10 +94,64 @@ p {
 }
 }
 
+.line-break {
+  height: 4rem;
+  background-image: url('../img/line-break.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center; 
+}
+
+.home {
+  text-align: center;
+  font-family:  'El Messiri', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  
+}
+
+.home a {
+  display: inline-block;
+  color: rgb(117, 81, 73);
+  text-decoration: none;
+  transition: transform .2s;
+}
+
+.home a:hover {
+  transform: scale(1.2);
+  text-shadow: 0.1rem 0.1rem rgb(176, 153, 112);
+}
+
+
 [type=button], [type=reset], [type=submit], button {
   background-color: #C9B183;
   border-color: #C9B183;
   font-weight: 700;
   color: rgb(117, 81, 73);
   outline: none;
+}
+
+.letter {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.result {
+  background-color: white;
+  font-family:  'El Messiri', sans-serif;
+
+}
+
+.wrapper {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.keyphrase {
+  font-weight: 700;
+}
+
+.quote {
+  text-align: right;
+  font-style: italic;
+
 }
