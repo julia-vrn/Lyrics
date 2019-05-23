@@ -37,7 +37,8 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   if(!empty($_REQUEST['keyph'])){
     $kask = $mysqli->prepare("INSERT INTO lyrics(category, keyphrase, comment, song, quote) VALUES (?, ?, ?, ?, ?)");
     echo $mysqli->error;
-    $kask->bind_param("sssss", $_REQUEST["cat"], $_REQUEST["keyph"], $_REQUEST["comm"], $_REQUEST["sng"], $_REQUEST["lrcs"]);
+    $cat = strtoupper($_REQUEST["cat"]);
+    $kask->bind_param("sssss", $cat, $_REQUEST["keyph"], $_REQUEST["comm"], $_REQUEST["sng"], $_REQUEST["lrcs"]);
     $kask->execute();
 
     header("Location: $_SERVER[PHP_SELF]");
