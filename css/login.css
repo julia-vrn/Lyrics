@@ -1,0 +1,62 @@
+body{
+	margin: 0 auto;
+  background-image: url("../img/coffee-communication-compose-1498964.jpg");
+  background-size: cover;
+	background-repeat: no-repeat;
+
+}
+
+.login {
+	width: 30rem;
+	height: 20rem;
+	text-align: center;
+	margin: 0 auto;
+	background-color: 	#4F3828;
+	margin-top: 12rem;
+	color: wheat;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+}
+
+
+input[type="text"],input[type="password"]{
+	margin-top: 30px;
+	height: 45px;
+	width: 300px;
+	font-size: 18px;
+	margin-bottom: 20px;
+	background-color: #fff;
+	padding-left: 40px;
+}
+
+.form-input::before{
+	content: "\f007";
+	font-family: "FontAwesome";
+	padding-left: 07px;
+	padding-top: 40px;
+	position: absolute;
+	font-size: 35px;
+	color: #2980b9; 
+}
+
+.form-input:nth-child(2)::before{
+	content: "\f023";
+}
+
+.btn-login{
+	padding: 15px 25px;
+	border: none;
+	background-color: #5a4028;
+	color: #fff;
+}
+
+.btn-submit {
+	background-color: rgb(119, 88, 54);
+	padding: 0.5rem;
+	text-transform: uppercase;
+	border: none;
+	outline: none;
+	color: wheat;
+	font-weight: 700;
+
+}

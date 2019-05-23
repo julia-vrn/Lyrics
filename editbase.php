@@ -1,10 +1,11 @@
-<?php 
+<?php
+// We need to use sessions, so you should always start sessions using the below code.
 session_start();
-
-$mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
-mysqli_query($mysqli,"SET NAMES UTF8");
-
-//$result = $mysqli->query("SELECT * FROM lyrics") or die(mysqli_error($mysqli));
+// If the user is not logged in redirect to the login page...
+if (!isset($_SESSION['loggedin'])) {
+	header('Location: index.html');
+	exit();
+}
 ?>
 
 
@@ -19,9 +20,31 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   <link href="https://fonts.googleapis.com/css?family=El+Messiri" rel="stylesheet">
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <title>Document</title>
+  <title>Управление словарем</title>
 </head>
 <body>
+<?php 
+
+//session_start();
+
+
+
+$mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
+mysqli_query($mysqli,"SET NAMES UTF8");
+
+
+
+  if(!empty($_REQUEST['keyph'])){
+    $kask = $mysqli->prepare("INSERT INTO lyrics(category, keyphrase, comment, song, quote) VALUES (?, ?, ?, ?, ?)");
+    echo $mysqli->error;
+    $kask->bind_param("sssss", $_REQUEST["cat"], $_REQUEST["keyph"], $_REQUEST["comm"], $_REQUEST["sng"], $_REQUEST["lrcs"]);
+    $kask->execute();
+
+    $_SESSION['message'] = "Record has been saved!";
+    $_SESSION['msg_type'] = "success";
+    header("Location: $_SERVER[PHP_SELF]");
+    }
+?>
 
 <div class="container">
   <!--main image section!-->
@@ -30,6 +53,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       <div class="main__quote--left">... Мне есть что спеть, представ перед всевышним, <br>
 Мне есть чем оправдаться перед ним...</div>
       <div class="main__quote--right">Владимир Высоцкий</div>
+     
 
     </div>
   </div>
@@ -72,51 +96,36 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       
       
   <div class="col-lg-4 col-md d-flex justify-content-center search">
-    <form method="GET" action="draft.php" class="align-self-center">
+    <form method="GET" action="editbase.php" class="align-self-center">
 <input type="text" name="search" placeholder="Введите слово"/>
 <input type="submit" value="Искать">
  </form>
     </div>
+    
+    </div><div class="row logout">
+      <div class="col-12 d-flex justify-content-end">
+      <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Выход из системы &#10005;</a>
+      </div>
     </div>
 
    
 
     <?php 
 
-  function randomQuote(){
-    $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
-    mysqli_query($mysqli,"SET NAMES UTF8");
-    $result =  $mysqli->query("SELECT keyphrase,  comment, song, quote FROM lyrics ORDER BY RAND() LIMIT 1") or die(mysqli_error($mysqli));
-    while($row = $result->fetch_assoc()){      
-      echo "<div class='row result '>";
-      echo "<div class='col-lg-12 mt-3 mb-3'>";
-      echo "<div class='wrapper d-flex keyphrase justify-content-center'>".$row['keyphrase']."</div>";
-      echo "</div>";
-      echo  "<div class='col-lg-12 mb-3'>";
-      echo "<div class='wrapper d-flex justify-content-center'>".$row['comment']."</div>"; 
-      echo "</div>";
-      echo "<div class='col-lg-12 mb-2'>";
-      echo "<div class='wrapper d-flex pr-3 justify-content-end'>".$row['song']."</div>";
-      echo "</div>";
-      echo  "<div class='col-lg-12'>";
-      echo "<div class='wrapper quote pr-3 d-flex justify-content-end'>".$row['quote']."</div>";
-      echo "</div>";
-      echo "</div>";
-      echo '<br>';
-    }
-  }
+  
 
    function sortLetter($letter){
     $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
     mysqli_query($mysqli,"SET NAMES UTF8");
-    $result =  $mysqli->query("SELECT keyphrase,  comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
+    $result =  $mysqli->query("SELECT id, keyphrase,  comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
     echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center'><span class='letter'>".$letter."</span></div></div>";
     while($row = $result->fetch_assoc()){
-      
+      $id = $row['id'];
       echo "<div class='row result '>";
       echo "<div class='col-lg-12  mt-3 mb-3'>";
       echo "<div class='wrapper d-flex keyphrase justify-content-center'>".$row['keyphrase']."</div>";
       echo "</div>";
+      echo "<div class='col-12 d-flex justify-content-center'><a href='delete.php?delete=$id;'>Удалить запись</a></div>";
       echo  "<div class='col-lg-12  mb-3'>";
       echo "<div class='wrapper d-flex justify-content-center'>".$row['comment']."</div>"; 
       echo "</div>";
@@ -142,7 +151,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      $link = ($_GET["c"]);
      foreach($glossary as $key=>$value){
        if($key==$link){
-        echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='draft.php'>На главную</a></span></div></div>";
+        echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='editbase.php'>На главную</a></span></div></div>";
         echo "<div class='row line-break'></div>";
         
         sortLetter($value); 
@@ -151,31 +160,83 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      }
  } else if(!isset($_GET['search'])) {
   echo "<div class='row line-break mt-4'></div>";
-  echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center search-query'><span>Случайная цитата</span></div></div>";
-  randomQuote();
+
+ echo "<div class='row d-flex justify-content-center'>
+  <button type='button' class='btn ' data-toggle='collapse' data-target='#demo'>Добавить новую запись</button>
+  <div id='demo' class='collapse'>
+  <form class='was-validated' novalidate=''>
+  <div class='form-row' method='POST' action='editbase.php'>
+    
+
+    <div class='form-group col-md-12'>
+    <label for='keyphrase'>Первая буква категории</label>
+    <input type='text' class='form-control' id='category' name='cat' placeholder='Первая буква категории' required>
+    <div class='invalid-feedback'>
+    Это поле не может быть оставлено пустым
+  </div>
+  
+    </div>
+    <div class='form-group col-md-12'>
+      <label for='keyphrase'>Ключевое слово или фраза</label>
+      <input type='text' class='form-control' name='keyph' id='keyphrase' placeholder='Слово или фраза' required> 
+      <div class='invalid-feedback'>
+        Это поле не может быть оставлено пустым
+      </div>
+    </div>
+    
+
+    <div class='form-group col-md-12'>
+    <label for='comment'>Пояснение</label>
+    <input type='text' class='form-control' id='comment' name='comm' placeholder='Пояснение' required>
+    <div class='invalid-feedback'>
+    Это поле не может быть оставлено пустым
+  </div>
+    </div>
+
+    
+
+    <div class='form-group col-md-12'>
+    <label for='song'>Название песни</label>
+    <input type='text' class='form-control' id='song' name='sng' placeholder='Название песни' required>
+    <div class='invalid-feedback'>
+    Это поле не может быть оставлено пустым
+  </div>
+    </div>
+
+    <div class='form-group col-md-12'>
+    <label for='song'>Слова песни</label>
+    <textarea class='form-control' id='lyrics' name='lrcs' placeholder='Слова песни' rows='10' required></textarea>
+    <div class='invalid-feedback'>
+    Это поле не может быть оставлено пустым
+  </div>
+  </div>
+    
+
+  </div>
+
+  <button type='submit' class='btn btn-primary  rounded-0' name='save'>Добавить</button>
+</form>
+</div>";
+ 
  }
   ?>
 
 <?php 
-
- if(isset($_GET['search']))
+ if(!empty($_GET['search']))
  { 
   echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='draft.php'>На главную</a></span></div></div>";
   echo "<div class='row line-break'></div>";
- $key=$_GET["search"]; 
- if($key==""){
-   echo "<div class='row result '><div class='col-lg-12 d-flex justify-content-center search-query'>Введите слово или фразу для поиска</div>";
- }else {
-    //key=pattern to be searched 
+ $key=$_GET["search"];  //key=pattern to be searched 
  $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
  echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center search-query'><span>Результаты поиска по вашему запросу: </span><span class='key'>".$key."</span></span></div></div>";
  while($row=mysqli_fetch_assoc($result))
  {
-    
+    $id = $row['id'];
     echo "<div class='row result '>";
     echo "<div class='col-lg-12 mt-3 mb-3'>";
     echo "<div class='wrapper d-flex keyphrase  justify-content-center'>".$row['keyphrase']."</div>";
     echo "</div>";
+    echo "<div class='col-12 d-flex justify-content-center'><a href='delete.php?delete=$id;'>Удалить запись</a></div>";
     echo  "<div class='col-lg-12  mb-3'>";
     echo "<div class='wrapper d-flex justify-content-center'>".$row['comment']."</div>"; 
     echo "</div>";
@@ -188,8 +249,6 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     echo "</div>";
     echo '<br>';
  } 
- }
-
  } 
  
  ?>
@@ -205,30 +264,6 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   
 
 </div>
-
-
-   
-   
-
- 
-<!--<table>
-<thead>
-          <tr>
-            <th>Category</th>
-            <th>Comment</th>
-            <th>Quote</th>
-          </tr>
-        </thead>
-       /* <?php
-         while($row = $result->fetch_assoc()): ?>
-         <tr>
-           <td><?php echo $row['category'];?></td>
-           <td><?php echo $row['comment'];?></td>
-           <td><?php echo $row['quote'];?></td>
-        </tr>
-        <?php endwhile; ?>
-      
-</table>-->
 
 
 

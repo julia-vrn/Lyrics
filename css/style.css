@@ -2,9 +2,17 @@ p {
   font-family: 'Caveat', cursive;
 }
 
+html {
+  
+}
+
 .container {
   padding-left: 0;
   padding-right: 0;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 5rem;
+  background-color: rgb(240, 221, 185);
 }
 .row {
   margin-left: 0;
@@ -12,8 +20,10 @@ p {
 
 }
 
-.body {
+
+body {
   box-sizing: border-box;
+  background-color: rgb(240, 221, 185);
 }
 
 .main-image {
@@ -64,7 +74,7 @@ p {
   text-align: center;
   padding-top: 0.2rem;
   padding-bottom: 0.1rem;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
 }
 .glossary-list a{
@@ -93,6 +103,19 @@ p {
     padding-bottom: 0.3rem;
 }
 }
+
+.logout {
+  padding: 1rem;
+  
+}
+
+.logout a{
+  display: inline-block;
+  font-family:  'El Messiri', sans-serif;
+  text-decoration: none;
+  color: #402B26;
+}
+
 
 .line-break {
   height: 4rem;
@@ -135,15 +158,31 @@ p {
   font-size: 2rem;
   font-weight: 700;
 }
+
+.search-query {
+  font-size: 0.7rem;
+  color: rgba(117, 81, 73, 0.8);
+}
+
+.key {
+  padding-left: 1rem;
+  font-style: italic;
+  font-weight: 700;
+
+}
+
 .result {
-  background-color: white;
+  
   font-family:  'El Messiri', sans-serif;
+ 
+
 
 }
 
 .wrapper {
   width: 75%;
   margin: 0 auto;
+  padding-bottom: 0
 }
 
 .keyphrase {
@@ -154,4 +193,21 @@ p {
   text-align: right;
   font-style: italic;
 
+
+}
+
+.footer {
+  background-color: #402B26;
+  height: 2.5rem;
+  color: wheat;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+}
+
+
+.container-login {
+  height: 100%;
+  min-height: 100%;
 }
