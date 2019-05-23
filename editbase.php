@@ -40,8 +40,6 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     $kask->bind_param("sssss", $_REQUEST["cat"], $_REQUEST["keyph"], $_REQUEST["comm"], $_REQUEST["sng"], $_REQUEST["lrcs"]);
     $kask->execute();
 
-    $_SESSION['message'] = "Record has been saved!";
-    $_SESSION['msg_type'] = "success";
     header("Location: $_SERVER[PHP_SELF]");
     }
 ?>
@@ -165,8 +163,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   <button type='button' class='btn ' data-toggle='collapse' data-target='#demo'>Добавить новую запись</button>
   <div id='demo' class='collapse'>
   <form class='was-validated' novalidate=''>
-  <div class='form-row' method='POST' action='editbase.php'>
-    
+  <div class='form-row' method='POST' action='editbase.php'>   
 
     <div class='form-group col-md-12'>
     <label for='keyphrase'>Первая буква категории</label>
@@ -174,7 +171,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     <div class='invalid-feedback'>
     Это поле не может быть оставлено пустым
   </div>
-  
+
     </div>
     <div class='form-group col-md-12'>
       <label for='keyphrase'>Ключевое слово или фраза</label>
@@ -209,12 +206,11 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     <div class='invalid-feedback'>
     Это поле не может быть оставлено пустым
   </div>
+  
   </div>
-    
-
-  </div>
-
+ </div>
   <button type='submit' class='btn btn-primary  rounded-0' name='save'>Добавить</button>
+  </div>
 </form>
 </div>";
  
