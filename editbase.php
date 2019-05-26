@@ -274,33 +274,89 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 <?php 
  if(!empty($_GET['search']))
  { 
-  echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='draft.php'>На главную</a></span></div></div>";
+  echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='editbase.php'>Добавить новую запись</a></span></div></div>";
   echo "<div class='row line-break'></div>";
  $key=$_GET["search"];  //key=pattern to be searched 
  $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
  echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center search-query'><span>Результаты поиска по вашему запросу: </span><span class='key'>".$key."</span></span></div></div>";
+ echo "
+ <table>
+ <tr>
+ <th class='id'>ID</th>
+ <th>Категория</th>
+ <th>Ключевая фраза</th>
+ <th>Пояснение</th>
+ <th>Название песни</th>
+ <th>Слова песни</th>
+ <th></th>
+ <th></th></tr>";
  while($row=mysqli_fetch_assoc($result))
  {
-    $id = $row['id'];
-    echo "<div class='row result '>";
-    echo "<div class='col-lg-12 mt-3 mb-3'>";
-    echo "<div class='wrapper d-flex keyphrase  justify-content-center'>".$row['keyphrase']."</div>";
-    echo "</div>";
-    echo "<div class='col-12 d-flex justify-content-center'><a href='delete.php?delete=$id;'>Удалить запись</a></div>";
-    echo  "<div class='col-lg-12  mb-3'>";
-    echo "<div class='wrapper d-flex justify-content-center'>".$row['comment']."</div>"; 
-    echo "</div>";
-    echo "<div class='col-lg-12  mb-2'>";
-    echo "<div class='wrapper d-flex pr-3 justify-content-end'>".$row['song']."</div>";
-    echo "</div>";
-    echo  "<div class='col-lg-12'>";
-    echo "<div class='wrapper quote pr-3 d-flex justify-content-end'>".$row['quote']."</div>";
-    echo "</div>";
-    echo "</div>";
-    echo '<br>';
+  $id = $row['id'];
+  echo "<tr class='table-row'>";
+  echo "<td class='align-top'>".$row['id']."</td>";
+  echo "<td class='align-top d-flex justify-content-center'>".$row['category']."</td>";
+  echo "<td class='align-top pr-3'>".$row['keyphrase']."</td>";
+  echo "<td class='align-top pr-3'>".$row['comment']."</td>"; 
+  echo "<td class='align-top'>".$row['song']."</td>";
+  echo "<td class='align-top' align='right'>".$row['quote']."</td>";
+  
+  echo "<td class='td-manage'><a href='#'></a>
+  <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+  <i class='fas fa-pen-nib'></i>
+</a>
+<div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='exampleModalLabel'>Редактирование записи</h5>
+       
+      </div>
+      <div class='modal-body'>
+
+      <form action='update.php' id='modal-details' method='POST'>
+      <div class='form-group'>
+      <input type='hidden' name='id' id='update_id class='form-control' value='$id'>
+      </div>
+
+    <div class='form-group'>
+      <label>Категория А-Я</label>
+        <input type='text' name='category' id='cat' class='form-control' value=''>
+    </div>   
+
+    <div class='form-group'>
+      <label>Ключевая фраза</label>
+        <input type='text' name='keyphrase' id='kp' class='form-control' value=''>
+    </div>    
+
+    <div class='form-group'>
+        <label>Пояснение</label>
+        <textarea name='comment' rows='4' id='cm' class='form-control' value=''></textarea>
+    </div>  
+
+   
+    <div class='form-group'>
+      <label>Название песни</label>
+      <input type='text' name='song' id='sn' class='form-control' value=''>
+   </div>  
+  
+   <div class='form-group'>
+    <label>Текст песни</label>
+    <textarea name='quote' rows='10' id='qt' class='form-control' value=''></textarea>
+  </div>  
+  <button type='submit' name='update' class='btn' form='modal-details'>Сохранить изменения</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>      
+  </td>";
+  echo "<td class='td-manage'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись'><i class='far fa-trash-alt'></i></a></td></tr>";
  } 
- } 
+
  
+ } 
+ echo "</table>";
  ?>
  
  <div class="row footer">
