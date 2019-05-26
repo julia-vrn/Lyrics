@@ -24,16 +24,10 @@ if (!isset($_SESSION['loggedin'])) {
   <title>Управление словарем</title>
 </head>
 <body>
+
 <?php 
-
-
-
-
-
 $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
 mysqli_query($mysqli,"SET NAMES UTF8");
-
-
 
   if(!empty($_REQUEST['keyph'])){
     $kask = $mysqli->prepare("INSERT INTO lyrics(category, keyphrase, comment, song, quote) VALUES (?, ?, ?, ?, ?)");
@@ -106,7 +100,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     
     </div><div class="row logout">
       <div class="col-12 d-flex justify-content-end">
-      <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Выход из системы &#10005;</a>
+      <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Выход из системы</a>
       </div>
     </div>
 
@@ -122,7 +116,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     echo "
     <table>
     <tr>
-    <th id='cell-hidden'>ID записи</th>
+    <th class='id'>ID</th>
     <th>Категория</th>
     <th>Ключевая фраза</th>
     <th>Пояснение</th>
@@ -132,13 +126,14 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     <th></th></tr>";
     
     while($row = $result->fetch_assoc()){
+      $id = $row['id'];
       echo "<tr class='table-row'>";
-      echo "<td id='cell-hidden'>".$row['id']."</td>";
+      echo "<td class='align-top'>".$row['id']."</td>";
       echo "<td class='align-top d-flex justify-content-center'>".$row['category']."</td>";
-      echo "<td class='align-top'>".$row['keyphrase']."</td>";
-      echo "<td class='align-top'>".$row['comment']."</td>"; 
+      echo "<td class='align-top pr-3'>".$row['keyphrase']."</td>";
+      echo "<td class='align-top pr-3'>".$row['comment']."</td>"; 
       echo "<td class='align-top'>".$row['song']."</td>";
-      echo "<td align='right'>".$row['quote']."</td>";
+      echo "<td class='align-top' align='right'>".$row['quote']."</td>";
       
       echo "<td class='td-manage'><a href='#'></a>
       <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
@@ -153,8 +148,10 @@ mysqli_query($mysqli,"SET NAMES UTF8");
           </div>
           <div class='modal-body'>
 
-          <form action='update.php' method='POST' '>
-          <input type='hidden' name='id' id='update_id value=''>
+          <form action='update.php' id='modal-details' method='POST'>
+          <div class='form-group'>
+          <input type='hidden' name='id' id='update_id class='form-control' value='$id'>
+          </div>
 
         <div class='form-group'>
           <label>Категория А-Я</label>
@@ -171,7 +168,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
             <textarea name='comment' rows='4' id='cm' class='form-control' value=''></textarea>
         </div>  
 
-        </form>
+       
         <div class='form-group'>
           <label>Название песни</label>
           <input type='text' name='song' id='sn' class='form-control' value=''>
@@ -183,7 +180,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       </div>  
       <button type='submit' name='update' class='btn' form='modal-details'>Сохранить изменения</button>
           </div>
-           
+          </form>
         </div>
       </div>
     </div>      
@@ -306,10 +303,10 @@ mysqli_query($mysqli,"SET NAMES UTF8");
  
  ?>
  
- <!--<div class="row footer">
+ <div class="row footer">
 <div class="col-lg-12 pt-2 foot"><span>&copy; Julia Vrn</span></div>
 </div>
-!-->
+
     </div>
   
     
@@ -326,6 +323,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   <script type='text/javascript'src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>  
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
+
 <script>
   $(document).ready(function(){
     $('.editbtn').on('click', function(){
@@ -335,13 +333,12 @@ mysqli_query($mysqli,"SET NAMES UTF8");
         return $(this).text();
       }).get();
       console.log($data);
-      $('#cat').val($data[0]);
+      $('#cat').val($data[1]);
+      $('#kp').val($data[2]);
+      $('#cm').val($data[3]);
+      $('#sn').val($data[4]);
+      $('#qt').val($data[5]);
     });
-
-   
-
-
-
   });
 
 </script>

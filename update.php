@@ -6,14 +6,14 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
 
 if(isset($_POST['update'])){
-  $id = $_POST['id'];
-  $category = $_POST['category'];
-  $keyphrase = $_POST['keyphrase'];
-  $comment = $_POST['comment'];
-  $song = $_POST['song'];
-  $quote= $_POST['quote'];
+  $id = $_REQUEST['id'];
+  $category = $_REQUEST['category'];
+  $keyphrase = $_REQUEST['keyphrase'];
+  $comment = $_REQUEST['comment'];
+  $song = $_REQUEST['song'];
+  $quote= $_REQUEST['quote'];
 
-  $mysqli->query("UPDATE lyrics SET category='$category', keyphrase='$keyphrase', comment='$comment', song='$song', quote='$quote' WHERE id='$id'") or die($mysqli->error);
+  $mysqli->query("UPDATE lyrics SET category='$category', keyphrase='$keyphrase', comment='$comment', song='$song', quote='$quote' WHERE id=$id") or die($mysqli->error);
 
   header("location: editbase.php");
 
