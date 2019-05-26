@@ -38,7 +38,7 @@ if ($stmt = $con->prepare('SELECT id, password FROM accounts WHERE username = ?'
       $_SESSION['loggedin'] = TRUE;
       $_SESSION['name'] = $_POST['username'];
       $_SESSION['id'] = $id;
-      header('Location: editbase.php');
+      header('Location: editbase.php?c=1');
     } else {
       echo 'Incorrect password!';
     }

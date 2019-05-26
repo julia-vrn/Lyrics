@@ -3,7 +3,7 @@
 session_start();
 // If the user is not logged in redirect to the login page...
 if (!isset($_SESSION['loggedin'])) {
-	header('Location: index.html');
+	header('Location: login.html');
 	exit();
 }
 ?>
@@ -36,7 +36,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     $kask->bind_param("sssss", $cat, $_REQUEST["keyph"], $_REQUEST["comm"], $_REQUEST["sng"], $_REQUEST["lrcs"]);
     $kask->execute();
 
-    header("Location: $_SERVER[PHP_SELF]");
+    header("Location: editbase.php?c=1");
     }
 
     
@@ -203,7 +203,54 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      $link = ($_GET["c"]);
      foreach($glossary as $key=>$value){
        if($key==$link){
-        echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='editbase.php'>На главную</a></span></div></div>";
+
+        echo "<div class='row'><div class='col-lg-12 pt-3 home'><span><a href='#'></a>
+      <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+      Добавить новую запись</i></span>
+    </a>
+    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='exampleModalLabel'>Добавить новую запись</h5>
+          </div>
+          <div class='modal-body'>
+
+          <form action='editbase.php?c=1' id='modal-details' method='POST'>
+
+        <div class='form-group'>
+          <label>Категория А-Я</label>
+            <input type='text' name='cat' class='form-control' value=''>
+        </div>   
+
+        <div class='form-group'>
+          <label>Ключевая фраза</label>
+            <input type='text' name='keyph' id='kp' class='form-control' value=''>
+        </div>    
+
+        <div class='form-group'>
+            <label>Пояснение</label>
+            <textarea name='comm' rows='4' id='cm' class='form-control' value=''></textarea>
+        </div>  
+
+       
+        <div class='form-group'>
+          <label>Название песни</label>
+          <input type='text' name='sng' id='sn' class='form-control' value=''>
+       </div>  
+      
+       <div class='form-group'>
+        <label>Текст песни</label>
+        <textarea rows='10' name='lrcs' class='form-control' value=''></textarea>
+      </div>  
+      <button type='submit' name='save' class='btn'>Сохранить запись</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>";
         echo "<div class='row line-break'></div>";
         
         sortLetter($value); 
