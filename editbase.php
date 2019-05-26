@@ -21,7 +21,13 @@ if (!isset($_SESSION['loggedin'])) {
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <script language="JavaScript" type="text/javascript">
+function checkDelete(){
+    return confirm('Are you sure?');
+}
+</script>
   <title>Управление словарем</title>
+
 </head>
 <body>
 
@@ -92,7 +98,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       
       
   <div class="col-lg-4 col-md d-flex justify-content-center search">
-    <form method="GET" action="editbase.php" class="align-self-center">
+    <form method="GET" action="editbase.php?c=1" class="align-self-center">
 <input type="text" name="search" placeholder="Введите слово"/>
 <input type="submit" value="Искать">
  </form>
@@ -114,7 +120,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
     $result =  $mysqli->query("SELECT id, category, keyphrase, comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
     echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center'><span class='letter'>".$letter."</span></div></div>";
     echo "
-    <table>
+    <table class='table'>
     <tr>
     <th class='id'>ID</th>
     <th>Категория</th>
@@ -135,9 +141,9 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       echo "<td class='align-top'>".$row['song']."</td>";
       echo "<td class='align-top' align='right'>".$row['quote']."</td>";
       
-      echo "<td class='td-manage'><a href='#'></a>
+      echo "<td class='td-manage align-middle'><a href='#'></a>
       <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
-      <i class='fas fa-pen-nib'></i>
+      <i class='fas fa-pen-nib' title='Редактировать запись'></i>
     </a>
     <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
       <div class='modal-dialog' role='document'>
@@ -154,7 +160,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
           </div>
 
         <div class='form-group'>
-          <label>Категория А-Я</label>
+          <label>Категория (А-Я)</label>
             <input type='text' name='category' id='cat' class='form-control' value=''>
         </div>   
 
@@ -185,7 +191,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       </div>
     </div>      
       </td>";
-      echo "<td class='td-manage'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись'><i class='far fa-trash-alt'></i></a></td></tr>";
+      echo "<td class='td-manage align-middle'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись' onclick='return checkDelete()'><i class='far fa-trash-alt' title='Удалить запись'></i></a></td></tr>";
       
     }
     echo "</table>";
@@ -204,11 +210,11 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      foreach($glossary as $key=>$value){
        if($key==$link){
 
-        echo "<div class='row'><div class='col-lg-12 pt-3 home'><span><a href='#'></a>
-      <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+       echo "<div class='row'><div class='col-lg-12 pt-3'><span><a href='#'></a>
+      <a href='#'  data-toggle='modal' data-target='#exampleModal1'>
       Добавить новую запись</i></span>
     </a>
-    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal fade' id='exampleModal1' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
@@ -216,7 +222,7 @@ mysqli_query($mysqli,"SET NAMES UTF8");
           </div>
           <div class='modal-body'>
 
-          <form action='editbase.php?c=1' id='modal-details' method='POST'>
+          <form action='editbase.php?c=1' method='POST'>
 
         <div class='form-group'>
           <label>Категория А-Я</label>
@@ -225,18 +231,18 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
         <div class='form-group'>
           <label>Ключевая фраза</label>
-            <input type='text' name='keyph' id='kp' class='form-control' value=''>
+            <input type='text' name='keyph' class='form-control' value=''>
         </div>    
 
         <div class='form-group'>
             <label>Пояснение</label>
-            <textarea name='comm' rows='4' id='cm' class='form-control' value=''></textarea>
+            <textarea name='comm' rows='4' class='form-control' value=''></textarea>
         </div>  
 
        
         <div class='form-group'>
           <label>Название песни</label>
-          <input type='text' name='sng' id='sn' class='form-control' value=''>
+          <input type='text' name='sng'  class='form-control' value=''>
        </div>  
       
        <div class='form-group'>
@@ -260,150 +266,148 @@ mysqli_query($mysqli,"SET NAMES UTF8");
  } else if(!isset($_GET['search'])) {
   echo "<div class='row line-break mt-4'></div>";
 
- echo "<div class='row d-flex justify-content-center'>
-  <button type='button' class='btn ' data-toggle='collapse' data-target='#demo'>Добавить новую запись</button>
-  <div id='demo' class='collapse'>
-  <form class='was-validated' novalidate=''>
-  <div class='form-row' method='POST' action='editbase.php'>   
-
-    <div class='form-group col-md-12'>
-    <label for='keyphrase'>Первая буква категории</label>
-    <input type='text' class='form-control' id='category' name='cat' placeholder='Первая буква категории' required>
-    <div class='invalid-feedback'>
-    Это поле не может быть оставлено пустым
-  </div>
-
-    </div>
-    <div class='form-group col-md-12'>
-      <label for='keyphrase'>Ключевое слово или фраза</label>
-      <input type='text' class='form-control' name='keyph' id='keyphrase' placeholder='Слово или фраза' required> 
-      <div class='invalid-feedback'>
-        Это поле не может быть оставлено пустым
-      </div>
-    </div>
-    
-
-    <div class='form-group col-md-12'>
-    <label for='comment'>Пояснение</label>
-    <input type='text' class='form-control' id='comment' name='comm' placeholder='Пояснение' required>
-    <div class='invalid-feedback'>
-    Это поле не может быть оставлено пустым
-  </div>
-    </div>
-
-    
-
-    <div class='form-group col-md-12'>
-    <label for='song'>Название песни</label>
-    <input type='text' class='form-control' id='song' name='sng' placeholder='Название песни' required>
-    <div class='invalid-feedback'>
-    Это поле не может быть оставлено пустым
-  </div>
-    </div>
-
-    <div class='form-group col-md-12'>
-    <label for='song'>Слова песни</label>
-    <textarea class='form-control' id='lyrics' name='lrcs' placeholder='Слова песни' rows='10' required></textarea>
-    <div class='invalid-feedback'>
-    Это поле не может быть оставлено пустым
-  </div>
-  
-  </div>
- </div>
-  <button type='submit' class='btn btn-primary  rounded-0' name='save'>Добавить</button>
-  </div>
-</form>
-</div>";
+ 
  }
   ?>
   
 
 <?php 
- if(!empty($_GET['search']))
+ if(isset($_GET['search']))
  { 
-  echo "<div class='row '><div class='col-lg-12 pt-3 home'><span><a href='editbase.php'>Добавить новую запись</a></span></div></div>";
+  echo "<div class='row'><div class='col-lg-12 pt-3'><span><a href='#'></a>
+      <a href='#'  data-toggle='modal' data-target='#exampleModal'>
+      Добавить новую запись</i></span>
+    </a>
+    <div class='modal fade' id='exampleModal1' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='exampleModalLabel'>Добавить новую запись</h5>
+          </div>
+          <div class='modal-body'>
+
+          <form action='editbase.php?c=1' method='POST'>
+
+        <div class='form-group'>
+          <label>Категория А-Я</label>
+            <input type='text' name='cat' class='form-control' value=''>
+        </div>   
+
+        <div class='form-group'>
+          <label>Ключевая фраза</label>
+            <input type='text' name='keyph' class='form-control' value=''>
+        </div>    
+
+        <div class='form-group'>
+            <label>Пояснение</label>
+            <textarea name='comm' rows='4' class='form-control' value=''></textarea>
+        </div>  
+
+       
+        <div class='form-group'>
+          <label>Название песни</label>
+          <input type='text' name='sng' class='form-control' value=''>
+       </div>  
+      
+       <div class='form-group'>
+        <label>Текст песни</label>
+        <textarea rows='10' name='lrcs' class='form-control' value=''></textarea>
+      </div>  
+      <button type='submit' name='save' class='btn'>Сохранить запись</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>";
   echo "<div class='row line-break'></div>";
  $key=$_GET["search"];  //key=pattern to be searched 
- $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
- echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center search-query'><span>Результаты поиска по вашему запросу: </span><span class='key'>".$key."</span></span></div></div>";
- echo "
- <table>
- <tr>
- <th class='id'>ID</th>
- <th>Категория</th>
- <th>Ключевая фраза</th>
- <th>Пояснение</th>
- <th>Название песни</th>
- <th>Слова песни</th>
- <th></th>
- <th></th></tr>";
- while($row=mysqli_fetch_assoc($result))
- {
-  $id = $row['id'];
-  echo "<tr class='table-row'>";
-  echo "<td class='align-top'>".$row['id']."</td>";
-  echo "<td class='align-top d-flex justify-content-center'>".$row['category']."</td>";
-  echo "<td class='align-top pr-3'>".$row['keyphrase']."</td>";
-  echo "<td class='align-top pr-3'>".$row['comment']."</td>"; 
-  echo "<td class='align-top'>".$row['song']."</td>";
-  echo "<td class='align-top' align='right'>".$row['quote']."</td>";
-  
-  echo "<td class='td-manage'><a href='#'></a>
-  <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
-  <i class='fas fa-pen-nib'></i>
-</a>
-<div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-  <div class='modal-dialog' role='document'>
-    <div class='modal-content'>
-      <div class='modal-header'>
-        <h5 class='modal-title' id='exampleModalLabel'>Редактирование записи</h5>
-       
-      </div>
-      <div class='modal-body'>
-
-      <form action='update.php' id='modal-details' method='POST'>
-      <div class='form-group'>
-      <input type='hidden' name='id' id='update_id class='form-control' value='$id'>
-      </div>
-
-    <div class='form-group'>
-      <label>Категория А-Я</label>
-        <input type='text' name='category' id='cat' class='form-control' value=''>
-    </div>   
-
-    <div class='form-group'>
-      <label>Ключевая фраза</label>
-        <input type='text' name='keyphrase' id='kp' class='form-control' value=''>
-    </div>    
-
-    <div class='form-group'>
-        <label>Пояснение</label>
-        <textarea name='comment' rows='4' id='cm' class='form-control' value=''></textarea>
+ if($key==""){
+  echo "<div class='row result '><div class='col-lg-12 d-flex justify-content-center search-query'>Введите слово или фразу для поиска</div>";
+ }else {
+  $result = mysqli_query($mysqli,"select * from lyrics where keyphrase like '%$key%'"); 
+  echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center search-query'><span>Результаты поиска по вашему запросу: </span><span class='key'>".$key."</span></span></div></div>";
+  echo "
+  <table class='table'>
+  <tr>
+  <th class='id'>ID</th>
+  <th>Категория</th>
+  <th>Ключевая фраза</th>
+  <th>Пояснение</th>
+  <th>Название песни</th>
+  <th>Слова песни</th>
+  <th></th>
+  <th></th></tr>";
+  while($row=mysqli_fetch_assoc($result))
+  {
+   $id = $row['id'];
+   echo "<tr class='table-row'>";
+   echo "<td class='align-top'>".$row['id']."</td>";
+   echo "<td class='align-top d-flex justify-content-center'>".$row['category']."</td>";
+   echo "<td class='align-top pr-3'>".$row['keyphrase']."</td>";
+   echo "<td class='align-top pr-3'>".$row['comment']."</td>"; 
+   echo "<td class='align-top'>".$row['song']."</td>";
+   echo "<td class='align-top' align='right'>".$row['quote']."</td>";
+   
+   echo "<td class='td-manage align-middle'><a href='#'></a>
+   <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+   <i class='fas fa-pen-nib' title='Редактировать запись'></i></a>
+ <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+   <div class='modal-dialog' role='document'>
+     <div class='modal-content'>
+       <div class='modal-header'>
+         <h5 class='modal-title' id='exampleModalLabel'>Редактирование записи</h5>
+        
+       </div>
+       <div class='modal-body'>
+ 
+       <form action='update.php' id='modal-details' method='POST'>
+       <div class='form-group'>
+       <input type='hidden' name='id' id='update_id class='form-control' value='$id'>
+       </div>
+ 
+     <div class='form-group'>
+       <label>Категория А-Я</label>
+         <input type='text' name='category' id='cat' class='form-control' value=''>
+     </div>   
+ 
+     <div class='form-group'>
+       <label>Ключевая фраза</label>
+         <input type='text' name='keyphrase' id='kp' class='form-control' value=''>
+     </div>    
+ 
+     <div class='form-group'>
+         <label>Пояснение</label>
+         <textarea name='comment' rows='4' id='cm' class='form-control' value=''></textarea>
+     </div>  
+ 
+    
+     <div class='form-group'>
+       <label>Название песни</label>
+       <input type='text' name='song' id='sn' class='form-control' value=''>
     </div>  
-
    
     <div class='form-group'>
-      <label>Название песни</label>
-      <input type='text' name='song' id='sn' class='form-control' value=''>
+     <label>Текст песни</label>
+     <textarea name='quote' rows='10' id='qt' class='form-control' value=''></textarea>
    </div>  
-  
-   <div class='form-group'>
-    <label>Текст песни</label>
-    <textarea name='quote' rows='10' id='qt' class='form-control' value=''></textarea>
-  </div>  
-  <button type='submit' name='update' class='btn' form='modal-details'>Сохранить изменения</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>      
-  </td>";
-  echo "<td class='td-manage'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись'><i class='far fa-trash-alt'></i></a></td></tr>";
- } 
-
+   <button type='submit' name='update' class='btn' form='modal-details'>Сохранить изменения</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>      
+   </td>";
+   echo "<td class='td-manage align-middle'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись' onclick='return checkDelete()'><i class='far fa-trash-alt' title='Удалить запись'></i></a></td></tr>";
+  } 
+ 
+   echo "</table>";
+ }
+ 
  
  } 
- echo "</table>";
+ 
  ?>
  
  <div class="row footer">

@@ -10,7 +10,7 @@ if(isset($_GET['delete'])) {
 
   $_SESSION['message'] = "Record has been deleted!";
   $_SESSION['msg_type'] = "danger";
-  header("location: editbase.php");
+  header("location: editbase.php?c=1");
 }
 
 ?>
