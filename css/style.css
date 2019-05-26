@@ -211,3 +211,29 @@ body {
   height: 100%;
   min-height: 100%;
 }
+
+th {
+  padding: 1rem;
+ text-align: center;
+ border: 1px solid red;
+}
+
+td {
+ padding-bottom: 1rem;
+}
+
+.td-manage{
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+}
+
+.editbtn {
+  display: inline-block;
+}
+
+
+.td-lyrics{
+  align: right;
+}

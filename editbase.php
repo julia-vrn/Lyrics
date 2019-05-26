@@ -19,13 +19,14 @@ if (!isset($_SESSION['loggedin'])) {
   <link href="https://fonts.googleapis.com/css?family=Marck+Script" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=El+Messiri" rel="stylesheet">
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <title>Управление словарем</title>
 </head>
 <body>
 <?php 
 
-//session_start();
+
 
 
 
@@ -43,6 +44,8 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
     header("Location: $_SERVER[PHP_SELF]");
     }
+
+    
 ?>
 
 <div class="container">
@@ -107,37 +110,90 @@ mysqli_query($mysqli,"SET NAMES UTF8");
       </div>
     </div>
 
-   
-
+    
+    
+    
     <?php 
-
-  
-
    function sortLetter($letter){
     $mysqli = new mysqli('localhost', 'juliav', '12345', 'crud') or die(mysqli_error($mysqli));
     mysqli_query($mysqli,"SET NAMES UTF8");
-    $result =  $mysqli->query("SELECT id, keyphrase,  comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
+    $result =  $mysqli->query("SELECT id, category, keyphrase, comment, song, quote FROM lyrics WHERE category LIKE '$letter'") or die(mysqli_error($mysqli));
     echo "<div class='row'><div class='col-lg-12 d-flex justify-content-center'><span class='letter'>".$letter."</span></div></div>";
+    echo "
+    <table>
+    <tr>
+    <th id='cell-hidden'>ID записи</th>
+    <th>Категория</th>
+    <th>Ключевая фраза</th>
+    <th>Пояснение</th>
+    <th>Название песни</th>
+    <th>Слова песни</th>
+    <th></th>
+    <th></th></tr>";
+    
     while($row = $result->fetch_assoc()){
-      $id = $row['id'];
-      echo "<div class='row result '>";
-      echo "<div class='col-lg-12  mt-3 mb-3'>";
-      echo "<div class='wrapper d-flex keyphrase justify-content-center'>".$row['keyphrase']."</div>";
-      echo "</div>";
-      echo "<div class='col-12 d-flex justify-content-center'><a href='delete.php?delete=$id;'>Удалить запись</a></div>";
-      echo  "<div class='col-lg-12  mb-3'>";
-      echo "<div class='wrapper d-flex justify-content-center'>".$row['comment']."</div>"; 
-      echo "</div>";
-      echo "<div class='col-lg-12  mb-2'>";
-      echo "<div class='wrapper d-flex pr-3 justify-content-end'>".$row['song']."</div>";
-      echo "</div>";
-      echo  "<div class='col-lg-12'>";
-      echo "<div class='wrapper quote pr-3 d-flex justify-content-end'>".$row['quote']."</div>";
-      echo "</div>";
-      echo "</div>";
-      echo '<br>';
+      echo "<tr class='table-row'>";
+      echo "<td id='cell-hidden'>".$row['id']."</td>";
+      echo "<td class='align-top d-flex justify-content-center'>".$row['category']."</td>";
+      echo "<td class='align-top'>".$row['keyphrase']."</td>";
+      echo "<td class='align-top'>".$row['comment']."</td>"; 
+      echo "<td class='align-top'>".$row['song']."</td>";
+      echo "<td align='right'>".$row['quote']."</td>";
+      
+      echo "<td class='td-manage'><a href='#'></a>
+      <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+      <i class='fas fa-pen-nib'></i>
+    </a>
+    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+      <div class='modal-dialog' role='document'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+            <h5 class='modal-title' id='exampleModalLabel'>Редактирование записи</h5>
+           
+          </div>
+          <div class='modal-body'>
+
+          <form action='update.php' method='POST' '>
+          <input type='hidden' name='id' id='update_id value=''>
+
+        <div class='form-group'>
+          <label>Категория А-Я</label>
+            <input type='text' name='category' id='cat' class='form-control' value=''>
+        </div>   
+
+        <div class='form-group'>
+          <label>Ключевая фраза</label>
+            <input type='text' name='keyphrase' id='kp' class='form-control' value=''>
+        </div>    
+
+        <div class='form-group'>
+            <label>Пояснение</label>
+            <textarea name='comment' rows='4' id='cm' class='form-control' value=''></textarea>
+        </div>  
+
+        </form>
+        <div class='form-group'>
+          <label>Название песни</label>
+          <input type='text' name='song' id='sn' class='form-control' value=''>
+       </div>  
+      
+       <div class='form-group'>
+        <label>Текст песни</label>
+        <textarea name='quote' rows='10' id='qt' class='form-control' value=''></textarea>
+      </div>  
+      <button type='submit' name='update' class='btn' form='modal-details'>Сохранить изменения</button>
+          </div>
+           
+        </div>
+      </div>
+    </div>      
+      </td>";
+      echo "<td class='td-manage'><a href='delete.php?delete={$row['id']};' class='align-middle' alt='удалить запись'><i class='far fa-trash-alt'></i></a></td></tr>";
+      
     }
+    echo "</table>";
   }
+  
   $glossary = array("1"=>"А", "2"=>"Б", "3"=>"В", "4"=>"Г", "5"=>"Д",
                     "6"=>"Е", "7"=>"Ж", "8"=>"З", "9"=>"И", "10"=>"К",
                     "11"=>"Л", "12"=>"М", "13"=>"Н", "14"=>"О", "15"=>"П",
@@ -214,9 +270,9 @@ mysqli_query($mysqli,"SET NAMES UTF8");
   </div>
 </form>
 </div>";
- 
  }
   ?>
+  
 
 <?php 
  if(!empty($_GET['search']))
@@ -250,9 +306,10 @@ mysqli_query($mysqli,"SET NAMES UTF8");
  
  ?>
  
- <div class="row footer">
+ <!--<div class="row footer">
 <div class="col-lg-12 pt-2 foot"><span>&copy; Julia Vrn</span></div>
 </div>
+!-->
     </div>
   
     
@@ -268,5 +325,26 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 
   <script type='text/javascript'src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>  
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $('.editbtn').on('click', function(){
+      
+      $tr = $(this).closest('tr');
+      var $data = $tr.find("td").map(function() {
+        return $(this).text();
+      }).get();
+      console.log($data);
+      $('#cat').val($data[0]);
+    });
+
+   
+
+
+
+  });
+
+</script>
+
 </body>
 </html>
