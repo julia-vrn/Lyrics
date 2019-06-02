@@ -210,15 +210,15 @@ mysqli_query($mysqli,"SET NAMES UTF8");
      foreach($glossary as $key=>$value){
        if($key==$link){
 
-       echo "<div class='row'><div class='col-lg-12 pt-3'><span><a href='#'></a>
+       echo "<div class='row'><div class='col-lg-12 pt-3 d-flex justify-content-center add-record'><span><a href='#'></a>
       <a href='#'  data-toggle='modal' data-target='#exampleModal1'>
       Добавить новую запись</i></span>
     </a>
-    <div class='modal fade' id='exampleModal1' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal fade' id='exampleModal1' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel1' aria-hidden='true'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Добавить новую запись</h5>
+            <h5 class='modal-title' id='exampleModalLabel1'>Добавить новую запись</h5>
           </div>
           <div class='modal-body'>
 
@@ -274,15 +274,15 @@ mysqli_query($mysqli,"SET NAMES UTF8");
 <?php 
  if(isset($_GET['search']))
  { 
-  echo "<div class='row'><div class='col-lg-12 pt-3'><span><a href='#'></a>
-      <a href='#'  data-toggle='modal' data-target='#exampleModal'>
+  echo "<div class='row'><div class='col-lg-12 pt-3 d-flex justify-content-center add-record'><span><a href='#'></a>
+      <a href='#'  data-toggle='modal' data-target='#exampleModal2'>
       Добавить новую запись</i></span>
     </a>
-    <div class='modal fade' id='exampleModal1' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal fade' id='exampleModal2' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel2' aria-hidden='true'>
       <div class='modal-dialog' role='document'>
         <div class='modal-content'>
           <div class='modal-header'>
-            <h5 class='modal-title' id='exampleModalLabel'>Добавить новую запись</h5>
+            <h5 class='modal-title' id='exampleModalLabel2'>Добавить новую запись</h5>
           </div>
           <div class='modal-body'>
 
@@ -351,13 +351,13 @@ mysqli_query($mysqli,"SET NAMES UTF8");
    echo "<td class='align-top' align='right'>".$row['quote']."</td>";
    
    echo "<td class='td-manage align-middle'><a href='#'></a>
-   <a href='#'  data-toggle='modal' data-target='#exampleModal' class='editbtn'>
+   <a href='#'  data-toggle='modal' data-target='#exampleModal3' class='editbtn'>
    <i class='fas fa-pen-nib' title='Редактировать запись'></i></a>
- <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+ <div class='modal fade' id='exampleModal3' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel3' aria-hidden='true'>
    <div class='modal-dialog' role='document'>
      <div class='modal-content'>
        <div class='modal-header'>
-         <h5 class='modal-title' id='exampleModalLabel'>Редактирование записи</h5>
+         <h5 class='modal-title' id='exampleModalLabel3'>Редактирование записи</h5>
         
        </div>
        <div class='modal-body'>

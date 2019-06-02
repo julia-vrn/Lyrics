@@ -23,7 +23,7 @@ html {
 
 body {
   box-sizing: border-box;
-  background-color: rgb(240, 221, 185);
+  background-color: #f0ddb9;
 }
 
 .main-image {
@@ -246,22 +246,14 @@ td {
   align: right;
 }
 
-/* Tooltip text */
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
- 
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
+.table {
+  font-family:  'El Messiri', sans-serif;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-  visibility: visible;
+.add-record a {
+  font-family:  'El Messiri', sans-serif;
+  text-decoration: none;
+  color:  #402B26;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
